@@ -15,8 +15,6 @@ const fetchConvert: AnyToAnyT = file =>
             apikey: token,
             input: 'base64',
             file,
-            // file:
-            //     'https://raw.githubusercontent.com/Ne4to777/Ne4to777.github.io/main/assets/test.jpg',
             outputformat: 'TXT',
             filename: 'test.jpg',
             options: {

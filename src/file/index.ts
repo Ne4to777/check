@@ -2,7 +2,7 @@ import type {AnyToAnyT, AnyToAny2T} from '../utils/types/functions';
 import {pipe} from '../utils/combinators';
 import {climb} from '../utils/object';
 import {newPromise} from '../utils/promise';
-import {fileReaderFactory, readAsDataURL} from '../utils/fileReader';
+import {newFileReader, readAsDataURL} from '../utils/fileReader';
 // import {log} from '../utils/supervisors';
 
 const extractBase64: AnyToAnyT = x => x.split(',').pop();
@@ -13,7 +13,7 @@ const chargeFileReaderHandlers: AnyToAny2T = reader => ({resolve, reject}) => {
 };
 
 const fileToBase64 = pipe([
-    readAsDataURL(fileReaderFactory),
+    readAsDataURL(newFileReader),
     chargeFileReaderHandlers,
     newPromise,
 ]);

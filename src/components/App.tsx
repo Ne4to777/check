@@ -3,7 +3,7 @@ import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import type {ElementType} from 'react';
 import type {AnyToAny2T} from '../utils/types/functions';
 import {fileToBase64} from '../file';
-import {pipe, pipeSafeAsync, I, B, K, C} from '../utils/combinators';
+import {pipe, pipeSafeAsync, I, B, K} from '../utils/combinators';
 import {sendToOCRAction, fetchByIdAction, handleErrorAction} from '../actions';
 import {fetchStatusById, fetchConvert} from '../services';
 import {climb} from '../utils/object';
@@ -34,8 +34,10 @@ const handleButtonClick: AnyToAny2T = ({dispatch, state: {id}}) =>
         [dispatch(actFetchById)],
     ]);
 
+const InitState = () => useSelector(I, shallowEqual);
+
 const AppComponent: ElementType = () => {
-    const state = useSelector(I, shallowEqual);
+    const {state} = InitState();
     const dispatch = B(useDispatch());
     return (
         <div>

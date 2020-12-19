@@ -7,7 +7,7 @@
         "build": "npm run build:ts && npm run build:files",
         "build:ts": "npm run remove:dist && npx tsc --build tsconfig.release.json",
         "build:files": "cp package.json package-lock.json README.md dist/",
-        "test": "npx jest --config ./jest.config.js",
+        "test": "npx jest --config ./configs/jest.config.js",
         "test:watch": "npm run test -- --watchAll",
         "test:coverage": "npx jest --coverage",
         "lint": "npx eslint --ext .ts --ext .tsx src/",

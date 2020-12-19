@@ -1,9 +1,10 @@
-import type {AnyToAnyT, AnyToAny2T, AnyToAny3T} from './types/functions';
+import type {AnyToAnyT, AnyToAny2T, AnyToAny3T} from '../types/functions';
 
 const I: AnyToAnyT = x => x;
 const K: AnyToAny2T = x => () => x;
 const B: AnyToAny3T = f => g => x => f(g(x));
 const C: AnyToAny3T = f => x => y => f(y)(x);
+
 type PipeReducerT = (x: any, y: any) => AnyToAnyT;
 const pipeReducerAsync: PipeReducerT = (acc, f) => async x => f(await acc(x));
 const pipeAsync: AnyToAnyT = fs => fs.reduce(pipeReducerAsync, I);

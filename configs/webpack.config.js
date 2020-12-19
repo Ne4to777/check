@@ -17,15 +17,7 @@ module.exports = {
         open: true,
         compress: true,
         hot: true,
-        port: 8080,
-        setup(app) {
-            app.post('/convert', (req, res) => {
-                console.log(1, res)
-            });
-            app.get('/convert', (req, res) => {
-                console.log(2, res)
-            });
-        },
+        port: 8080
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
