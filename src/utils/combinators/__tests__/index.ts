@@ -1,7 +1,7 @@
+import type {AnyToAnyT, AnyToAny2T} from '../../types/functions';
 import {pipeAsync, pipe, pipeSafeAsync, parallel, I, K, B, C} from '..';
 import {testToBe} from '../../test';
 import {OBJECT_DUMMY} from '../../dummies';
-import type {AnyToAnyT, AnyToAny2T} from '../../types/functions';
 
 const returnIdentity: AnyToAnyT = x => x;
 const test: AnyToAny2T = name => testToBe(name)(OBJECT_DUMMY)(returnIdentity);

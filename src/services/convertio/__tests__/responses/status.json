@@ -1,0 +1,16 @@
+{
+    "data": {
+        "code": 200,
+        "status": "ok",
+        "data": {
+            "id": "7f491d8e28e3ac961b8de3ecdade460a",
+            "step": "finish",
+            "step_percent": 100,
+            "minutes": "1",
+            "output": {
+                "size": "3",
+                "url": "https://s149.convertio.me/p/0Dk6yDwrJt8LkDhq7MI-Pw/c90c6d2729d7c5e51c790ca5e431f159/test.ocr_2.txt"
+            }
+        }
+    }
+}

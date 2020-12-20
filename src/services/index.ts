@@ -1,3 +1,3 @@
-import {fetchContentBySource, fetchConvert, fetchStatusById} from './convertio';
+import {fetchConvert, fetchStatusById} from './convertio';
 
-export {fetchContentBySource, fetchConvert, fetchStatusById};
+export {fetchConvert, fetchStatusById};

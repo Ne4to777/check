@@ -1,4 +1,4 @@
-import type {AnyToAnyT, AnyToAny2T, AnyToAny3T} from './types/functions';
+import type {AnyToAnyT, AnyToAny2T, AnyToAny3T} from '../types/functions';
 
 const climbReducer: AnyToAnyT = (acc, x) => acc[x];
 const climb: AnyToAny2T = props => o => props.reduce(climbReducer, o);

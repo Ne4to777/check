@@ -5,5 +5,5 @@ module.exports = {
     },
     // cache: false,
     testMatch: ['**/__tests__/**'],
-    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
 };

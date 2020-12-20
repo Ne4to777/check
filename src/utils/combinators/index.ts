@@ -2,19 +2,20 @@ import type {AnyToAnyT, AnyToAny2T, AnyToAny3T} from '../types/functions';
 
 const I: AnyToAnyT = x => x;
 const K: AnyToAny2T = x => () => x;
-const B: AnyToAny3T = f => g => x => f(g(x));
-const C: AnyToAny3T = f => x => y => f(y)(x);
+const A: AnyToAny2T = f => (...xs) => f(...xs);
+const B: AnyToAny3T = f => g => (...xs) => f(g(...xs));
+const C: AnyToAny3T = f => (...xs) => (...ys) => f(...ys)(...xs);
 
-type PipeReducerT = (x: any, y: any) => AnyToAnyT;
-const pipeReducerAsync: PipeReducerT = (acc, f) => async x => f(await acc(x));
+const pipeReducerAsync: AnyToAny2T = (acc, f) => async (...xs) =>
+    f(await acc(...xs));
 const pipeAsync: AnyToAnyT = fs => fs.reduce(pipeReducerAsync, I);
 
-const pipeReducer: PipeReducerT = (acc, f) => x => f(acc(x));
+const pipeReducer: AnyToAny2T = (acc, f) => (...xs) => f(acc(...xs));
 const pipe: AnyToAnyT = fs => fs.reduce(pipeReducer, I);
 
-const pipeSafeReducerAsync: PipeReducerT = (acc, [f, g]) => async x => {
+const pipeSafeReducerAsync: AnyToAny2T = (acc, [f, g]) => async (...xs) => {
     try {
-        return await f(await acc(x));
+        return await f(await acc(...xs));
     } catch (err) {
         if (g) throw await g(err);
         throw err;
@@ -28,9 +29,9 @@ const pipeSafeAsync: AnyToAnyT = fs => {
     }
 };
 
-const parallelRedcer: AnyToAny2T = x => (acc, f) => acc(f(x));
+const parallelRedcer: AnyToAny2T = (...xs) => (acc, f) => acc(f(...xs));
 
-const parallel: AnyToAny3T = joiner => fs => x =>
-    fs.reduce(parallelRedcer(x), joiner);
+const parallel: AnyToAny3T = joiner => fs => (...xs) =>
+    fs.reduce(parallelRedcer(...xs), joiner);
 
-export {pipeAsync, pipe, pipeSafeAsync, parallel, I, K, B, C};
+export {pipeAsync, pipe, pipeSafeAsync, parallel, I, K, B, C, A};

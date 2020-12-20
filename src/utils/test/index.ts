@@ -1,9 +1,12 @@
-import type {AnyToAny4T, AnyToAny3T} from '../types/functions';
+import type {AnyToAny4T, AnyToAny2T, AnyToAny3T} from '../types/functions';
 
-const expectToBe: AnyToAny3T = controlData => testData => async () =>
+const expectToBe: AnyToAny2T = controlData => async testData =>
     expect(await testData).toBe(await controlData);
 
-const testToBe: AnyToAny4T = name => sample => controlHandler => testHandler =>
-    test(name, expectToBe(controlHandler(sample))(testHandler(sample)));
+const toBe: AnyToAny3T = sample => controlHandler => testHandler =>
+    expectToBe(controlHandler(sample))(testHandler(sample));
 
-export {testToBe};
+const testToBe: AnyToAny4T = name => sample => controlHandler => testHandler =>
+    test(name, () => toBe(sample)(controlHandler)(testHandler));
+
+export {testToBe, toBe};

@@ -2,11 +2,11 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import store from './store';
-import App from './components/App';
+import Converter from './components/Converter';
 
 render(
     <Provider store={store}>
-        <App />
+        <Converter />
     </Provider>,
     document.getElementById('root'),
 );
