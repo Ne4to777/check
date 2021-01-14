@@ -1,3 +1,5 @@
-import View from './view';
+import actions from './actions';
+import {connect} from '../../utils/redux';
+import view from './view';
 
-export default View;
+export default connect({statePath: ['converter'], actions, view});

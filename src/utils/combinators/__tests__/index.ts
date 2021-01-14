@@ -1,5 +1,5 @@
 import type {AnyToAnyT, AnyToAny2T} from '../../types/functions';
-import {pipeAsync, pipe, pipeSafeAsync, parallel, I, K, B, C} from '..';
+import {pipeAsync, pipe, bipipeAsync, parallel, I, K, B, C} from '..';
 import {testToBe} from '../../test';
 import {OBJECT_DUMMY} from '../../dummies';
 
@@ -11,7 +11,7 @@ const returnCompose: AnyToAnyT = B(I)(I);
 const returnFlip: AnyToAnyT = x => C(K)(x)(x);
 const returnPipe: AnyToAnyT = pipe([I, I]);
 const returnPipeAsync: AnyToAnyT = pipeAsync([I, I]);
-const returnPipeSafeAsync: AnyToAnyT = pipeSafeAsync([[I], [I]]);
+const returnBipipeAsync: AnyToAnyT = bipipeAsync([[I], [I]]);
 const returnParallel: AnyToAnyT = parallel(K)([I, I]);
 
 describe('Combinators', () => {
@@ -21,6 +21,6 @@ describe('Combinators', () => {
     test('C')(returnFlip);
     test('pipe')(returnPipe);
     test('pipeAsync')(returnPipeAsync);
-    test('pipeSafeAsync')(returnPipeSafeAsync);
+    test('bipipeAsync')(returnBipipeAsync);
     test('parallel')(returnParallel);
 });

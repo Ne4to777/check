@@ -1,65 +1,77 @@
-import type {ElementType} from 'react';
-import type {AnyToAny2T} from '../../utils/types/functions';
+import type {AnyToAnyT} from '../../utils/types/functions';
 import React from 'react';
-import PropTypes from 'prop-types';
-import {useDispatch, useSelector, shallowEqual} from 'react-redux';
-import {fileToBase64} from '../../utils/file';
-import {pipe, pipeSafeAsync, I, B, K} from '../../utils/combinators';
-import {sendToOCRAction, fetchByIdAction, handleErrorAction} from './actions';
-import {fetchStatusById, fetchConvert} from '../../services';
-import {climb} from '../../utils/object';
-import {composeWithPersist} from '../../utils/event';
-// import {log} from '../../utils/supervisors';
 
-const getFileFromEvent = climb(['target', 'files', 0]);
-const getErrorFromResponse = climb(['data', 'error']);
-const getIdFromFromResponse = climb(['data', 'data', 'id']);
-
-const actFetchError = pipe([getErrorFromResponse, handleErrorAction]);
-const actSendToOCR = pipe([getIdFromFromResponse, sendToOCRAction]);
-
-const actFetchById = pipe([climb(['data', 'data']), fetchByIdAction]);
-
-const handleInputChange: AnyToAny2T = ({dispatch}) =>
-    pipeSafeAsync([
-        [getFileFromEvent],
-        [fileToBase64],
-        [fetchConvert, dispatch(actFetchError)],
-        [dispatch(actSendToOCR)],
-    ]);
-
-const handleButtonClick: AnyToAny2T = ({dispatch, state: {id}}) =>
-    pipeSafeAsync([
-        [K(id)],
-        [fetchStatusById, dispatch(actFetchError)],
-        [dispatch(actFetchById)],
-    ]);
-
-const InitState = () => useSelector(I, shallowEqual);
-const InitDispatch = B(B)(useDispatch);
-
-const Converter: ElementType = () => {
-    const state = InitState();
-    const {id, status, url, error} = state;
-    const dispatch = InitDispatch();
-    const fileLoadHandler = composeWithPersist(
-        handleInputChange({dispatch, state}),
-    );
-    const statusHandler = handleButtonClick({dispatch, state});
-    return (
+const View: AnyToAnyT = ({
+    id,
+    status,
+    url,
+    items,
+    error,
+    itemsRequestParams,
+    convertItemRequested,
+    getItemsRequested,
+    getItemStatusByIdRequested,
+    getItemContentByIdRequested,
+    setGetItemsRequestParams,
+}) => (
+    <>
+        <div>{id}</div>
+        <div>{status}</div>
+        <div>{status === 'finish' && <a href={url}>Download</a>}</div>
         <div>
-            <div>{id}</div>
-            <div>{status}</div>
-            <div>{status === 'finish' && <a href={url}>Download</a>}</div>
-            <div>{error}</div>
-            <input type="file" onChange={fileLoadHandler} />
-            <input type="button" onClick={statusHandler} value="second" />
+            {items.map((x: Record<string, any>, i: number) => (
+                <div key={i}>{JSON.stringify(x, null, '\n')}</div>
+            ))}
         </div>
-    );
-};
+        <div>{error}</div>
+        <label htmlFor="conversions-count">Count:</label>
 
-Converter.propTypes = {
-    store: PropTypes.object,
-};
+        <select
+            name="conversions-count"
+            id="conversions-count"
+            value={itemsRequestParams.count}
+            onChange={e =>
+                setGetItemsRequestParams({count: Number(e.target.value)})
+            }
+        >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="0">All</option>
+        </select>
+        <select
+            name="conversions-status"
+            id="conversions-status"
+            value={itemsRequestParams.status ?? ''}
+            onChange={e => setGetItemsRequestParams({status: e.target.value})}
+        >
+            <option value="finished">finished</option>
+            <option value="failed">failed</option>
+            <option value="converting">converting</option>
+            <option value="">All</option>
+        </select>
+        <button onClick={() => getItemsRequested(itemsRequestParams)}>
+            getItemsRequested
+        </button>
+        <button onClick={() => getItemStatusByIdRequested(id)}>
+            getItemStatusByIdRequested
+        </button>
+        <button onClick={() => getItemContentByIdRequested(id)}>
+            getItemContentByIdRequested
+        </button>
+        <label htmlFor="filename">filename:</label>
+        <input type="text" id="filename" defaultValue="test.jpg" />
+        <input
+            type="file"
+            onChange={e =>
+                convertItemRequested({
+                    file: e.target.files && e.target.files[0],
+                    filename: 'test.jpg',
+                    outputformat: 'XLSX',
+                })
+            }
+        />
+    </>
+);
 
-export default Converter;
+export default View;

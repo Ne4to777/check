@@ -3,4 +3,10 @@ export default {
     error: '',
     status: '',
     url: '',
+    content: '',
+    itemsRequestParams: {
+        count: 0,
+        status: undefined,
+    },
+    items: [],
 };

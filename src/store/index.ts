@@ -1,13 +1,18 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
-import converterReducer from '../components/Converter/reducer';
+import reducer from './reducer';
+import epic from './epic';
 import immutableStateMiddleware from 'redux-immutable-state-invariant';
+import {createEpicMiddleware} from 'redux-observable';
+import {configureStore} from '@reduxjs/toolkit';
 
-const reducer = combineReducers({
-    converter: converterReducer,
+const epicMiddleware = createEpicMiddleware();
+
+const middleware = [immutableStateMiddleware(), epicMiddleware];
+
+const store = configureStore({
+    reducer,
+    middleware,
 });
 
-const middleware = [immutableStateMiddleware()];
-
-const store = createStore(reducer, applyMiddleware(...middleware));
+epicMiddleware.run(epic);
 
 export default store;

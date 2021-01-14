@@ -6,28 +6,23 @@ import {climb} from '../object';
 import {newPromise} from '../promise';
 // import {log} from '../supervisors';
 
-const extractBase64: AnyToAnyT = x => x.split(',').pop();
+export const extractBase64: AnyToAnyT = x => x.split(',').pop();
 
-const newFileReader: AnyToAnyT = () => new FileReader();
+export const newFileReader: AnyToAnyT = () => new FileReader();
 
-const readAsDataURL: AnyToAny2T = factory => file =>
+export const readAsDataURL: AnyToAny2T = factory => file =>
     parallel(K)([I, methodApply('readAsDataURL')(file)])(factory());
 
-const chargeFileReaderHandlers: AnyToAny2T = reader => ({resolve, reject}) => {
+export const chargeFileReaderHandlers: AnyToAny2T = reader => ({
+    resolve,
+    reject,
+}) => {
     reader.onload = pipe([climb(['target', 'result']), extractBase64, resolve]);
     reader.onerror = reject;
 };
 
-const fileToBase64 = pipe([
+export const fileToBase64 = pipe([
     readAsDataURL(newFileReader),
     chargeFileReaderHandlers,
     newPromise,
 ]);
-
-export {
-    extractBase64,
-    newFileReader,
-    readAsDataURL,
-    chargeFileReaderHandlers,
-    fileToBase64,
-};

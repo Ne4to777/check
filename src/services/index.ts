@@ -1,3 +1,3 @@
-import {fetchConvert, fetchStatusById} from './convertio';
+import http from './convertio';
 
-export {fetchConvert, fetchStatusById};
+export default http;

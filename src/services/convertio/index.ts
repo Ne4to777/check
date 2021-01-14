@@ -1,45 +1,53 @@
-import type {AnyToAnyT} from '../../utils/types/functions';
-import axios from 'axios';
+import type {AnyToAnyT, AnyToAny2T} from '../../utils/types/functions';
+import http from '../../utils/http';
 import {host, api, token} from '../../../configs/convertio.config';
-// import {log} from '../../utils/supervisors';
 
-const url = `${host}/${api}`;
+const API_URL = `${host}/${api}`;
 
-const fetchConvert: AnyToAnyT = file =>
-    axios({
-        method: 'post',
-        url,
-        data: {
-            apikey: token,
-            input: 'base64',
-            file,
-            outputformat: 'TXT',
-            filename: 'test.jpg',
-            options: {
-                ocr_enabled: true,
-                ocr_settings: {
-                    langs: ['eng', 'rus'],
-                },
+const convertItem: AnyToAny2T = (params = {}) =>
+    http.post(API_URL, {
+        apikey: token,
+        input: params.input ?? 'base64',
+        file: params.file,
+        outputformat: params.outputformat ?? 'TXT',
+        filename: params.filename,
+        options: params.options ?? {
+            ocr_enabled: true,
+            ocr_settings: {
+                langs: ['eng', 'rus'],
             },
         },
-    }).catch(({response}) => {
-        throw response;
     });
 
-const fetchStatusById: AnyToAnyT = id =>
-    axios({
-        method: 'get',
-        url: `${url}/${id}/status`,
-    }).catch(({response}) => {
-        throw response;
+// convertItem().then(console.log).catch(console.error);
+
+const getItems: AnyToAnyT = ({status, count} = {}) =>
+    http.post(`${API_URL}/list`, {
+        apikey: token,
+        status,
+        count,
     });
 
-const fetchContentById: AnyToAnyT = id =>
-    axios({
-        method: 'get',
-        url: `${url}/${id}/dl`,
-    }).catch(({response}) => {
-        throw response;
-    });
+// getItems().then(console.log).catch(console.error);
 
-export {fetchStatusById, fetchContentById, fetchConvert};
+const getItemStatusById: AnyToAnyT = id => http.get(`${API_URL}/${id}/status`);
+
+// getItemById('916f4d7ed093714c03281338f94c1494')
+//     .then(console.log)
+//     .catch(console.error);
+
+const getItemContentById: AnyToAnyT = id => http.get(`${API_URL}/${id}/dl`);
+
+// getItemContentById('916f4d7ed093714c03281338f94c1494')
+//     .then(console.log)
+//     .catch(console.error);
+
+const deleteItemById: AnyToAnyT = id => http.delete(`${API_URL}/${id}`);
+
+export default {
+    convertItem,
+    getItems,
+    getItemStatusById,
+    getItemContentById,
+    deleteItemById,
+};

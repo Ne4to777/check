@@ -1,7 +1,7 @@
 {
     "root": true,
     "parserOptions": {
-        "ecmaVersion": 6
+        "ecmaVersion": 2020
     },
     "env": {
         "node": true
@@ -51,9 +51,10 @@
                 "no-console": "off",
                 "strict": "off",
                 "sonarjs/cognitive-complexity": "error",
-                "react/react-in-jsx-scope": "off",
                 "no-use-before-define": "off",
-                "react-hooks/rules-of-hooks": "error",
+                "react/react-in-jsx-scope": "off",
+                "react/prop-types":"off",
+                "react-hooks/rules-of-hooks":"off",
                 "react-hooks/exhaustive-deps": "error",
                 "semi": "error",
                 "implicit-arrow-linebreak": "off",

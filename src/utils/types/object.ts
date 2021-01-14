@@ -1,4 +1,3 @@
 import type {AnyToAnyT} from './functions';
-type ObjectOfAnyToAnyT = Record<string, AnyToAnyT>;
-
-export {ObjectOfAnyToAnyT};
+export type ObjectOfAnyToAnyT = Record<any, AnyToAnyT>;
+export type ObjectT = Record<string, any>;
